@@ -1,0 +1,8 @@
+node_modules/
+Dockerfile
+.vscode
+dist
+output
+target
+*.db
+.git

@@ -1,0 +1,42 @@
+version: "3"
+services:
+  web:
+    build:
+      context: './web'
+      dockerfile: Dockerfile
+    container_name: "heroes-web"
+    ports:
+      - 80:80
+    networks:
+      - heroes-network
+    depends_on:
+      - api
+  api:
+    build:
+      context: './api'
+      dockerfile: Dockerfile
+    container_name: "heroes-api"
+    ports:
+      - 3000:3000
+    networks:
+      - heroes-network
+    depends_on:
+      - mongo
+  mongo:
+    image: 'mongodb'
+    container_name: 'heroes-db'
+    ports:
+      - 27017:27017
+    environment:
+      #Do not put in prod
+      - MONGO_INITDB_DATABASE=heroes
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      -  mongodb-data:/data/db
+    networks:
+      - heroes-network  
+volumes:
+  mongodb-data:
+networks:
+  heroes-network:
